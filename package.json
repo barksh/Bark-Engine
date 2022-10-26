@@ -1,0 +1,43 @@
+{
+  "name": "@barksh/execute-core",
+  "version": "1.0.0",
+  "description": "Execute Core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarkSH/Bark-Execute-Core.git"
+  },
+  "keywords": [
+    "NLP",
+    "Robot"
+  ],
+  "author": "WMXPY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BarkSH/Bark-Execute-Core/issues"
+  },
+  "homepage": "https://bark.sh",
+  "dependencies": {
+    "@sudoo/marked": "^3.16.2",
+    "connor": "^2.7.0"
+  },
+  "devDependencies": {
+    "@sudoo/triforce": "^3.9.1"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "instrument": true,
+    "reporter": [
+      "json",
+      "text-summary"
+    ],
+    "report-dir": "coverage",
+    "sourceMap": true
+  }
+}
