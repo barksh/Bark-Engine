@@ -6,6 +6,7 @@
 
 import { Sandbox } from "@sudoo/marked";
 import { ICandidate } from "../candidate/declare";
+import { BarkGameController } from "./controller/game";
 import { IBarkGame } from "./declare";
 import { createGameSandbox } from "./sandbox";
 
@@ -25,7 +26,11 @@ export class BarkGameExecuter {
 
     public async execute(candidates: Iterable<ICandidate>): Promise<void> {
 
-        const gameSandbox: Sandbox = createGameSandbox(candidates);
+        const gameController: BarkGameController = BarkGameController.fromConfig({
+            candidates,
+        });
+
+        const gameSandbox: Sandbox = createGameSandbox(gameController);
 
         await gameSandbox.evaluate(this.game.script);
 

@@ -9,9 +9,11 @@ import { markedDateMixinFactory } from "@sudoo/marked-mixin-date";
 import { markedJsonMixinFactory } from "@sudoo/marked-mixin-json";
 import { markedObjectMixinFactory } from "@sudoo/marked-mixin-object";
 import { markedParseMixinFactory } from "@sudoo/marked-mixin-parse";
-import { ICandidate } from "../candidate/declare";
+import { BarkGameController } from "./controller/game";
 
-export const createGameSandbox = (candidates: Iterable<ICandidate>): Sandbox => {
+export const createGameSandbox = (
+    gameController: BarkGameController,
+): Sandbox => {
 
     const sandbox: Sandbox = Sandbox.fromAllEvaluators();
 
@@ -20,9 +22,7 @@ export const createGameSandbox = (candidates: Iterable<ICandidate>): Sandbox => 
     sandbox.use(markedObjectMixinFactory.createInjectMixin("Object"));
     sandbox.use(markedParseMixinFactory.createInjectMixin("Parse"));
 
-    const candidateList: ICandidate[] = Array.from(candidates);
-
-    sandbox.inject('candidates', candidateList);
+    sandbox.use(gameController.createSandboxMixin());
 
     return sandbox;
 };
