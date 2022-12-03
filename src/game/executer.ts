@@ -7,6 +7,7 @@
 import { Sandbox } from "@sudoo/marked";
 import { ICandidate } from "../candidate/declare";
 import { BarkUI } from "../ui/ui";
+import { BarkGameAdditionalArgument } from "./additional-argument";
 import { BarkGameController } from "./controller/game";
 import { IBarkGame } from "./declare";
 import { BarkGameResultBuilder, BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "./result";
@@ -51,6 +52,8 @@ export class BarkGameExecuter {
 
     public async execute(candidates: Iterable<ICandidate>): Promise<IBarkGameResult> {
 
+        const additionalArgument: BarkGameAdditionalArgument = BarkGameAdditionalArgument.create();
+
         const gameController: BarkGameController = BarkGameController.fromConfig({
             candidates,
             ui: this.ui,
@@ -59,6 +62,7 @@ export class BarkGameExecuter {
         const session: BarkGameSession = BarkGameSession.create();
 
         const gameSandbox: Sandbox = createGameSandbox({
+            additionalArgument,
             gameController,
             session,
         });

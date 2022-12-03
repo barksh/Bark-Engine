@@ -5,6 +5,7 @@
  */
 
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
+import { BarkGameAdditionalArgument } from "./additional-argument";
 
 export class BarkGameSession {
 
@@ -51,9 +52,15 @@ export class BarkGameSession {
 
             sandbox.inject('session', {
 
-                getRound: () => this.currentRound,
-                get: (key: string) => this.get(key),
-                set: (key: string, value: any) => this.set(key, value),
+                getRound: (_additionalArgument: BarkGameAdditionalArgument) => {
+                    return this.currentRound;
+                },
+                get: (_additionalArgument: BarkGameAdditionalArgument, key: string) => {
+                    return this.get(key);
+                },
+                set: (_additionalArgument: BarkGameAdditionalArgument, key: string, value: any) => {
+                    return this.set(key, value);
+                },
             });
         };
     }

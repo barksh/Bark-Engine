@@ -5,6 +5,7 @@
  */
 
 import { ICandidate } from "../../candidate/declare";
+import { BarkGameAdditionalArgument } from "../additional-argument";
 
 export class BarkGameCandidatesController {
 
@@ -26,7 +27,9 @@ export class BarkGameCandidatesController {
 
         return {
 
-            size: () => this._candidates.length,
+            size: () => (_additionalArgument: BarkGameAdditionalArgument) => {
+                return this._candidates.length;
+            },
         };
     }
 }

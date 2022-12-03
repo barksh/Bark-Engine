@@ -9,10 +9,13 @@ import { markedDateMixinFactory } from "@sudoo/marked-mixin-date";
 import { markedJsonMixinFactory } from "@sudoo/marked-mixin-json";
 import { markedObjectMixinFactory } from "@sudoo/marked-mixin-object";
 import { markedParseMixinFactory } from "@sudoo/marked-mixin-parse";
+import { BarkGameAdditionalArgument } from "./additional-argument";
 import { BarkGameController } from "./controller/game";
 import { BarkGameSession } from "./session";
 
 export interface ICreateGameSandboxConfig {
+
+    readonly additionalArgument: BarkGameAdditionalArgument;
 
     readonly gameController: BarkGameController;
     readonly session: BarkGameSession;
@@ -23,6 +26,8 @@ export const createGameSandbox = (
 ): Sandbox => {
 
     const sandbox: Sandbox = Sandbox.fromAllEvaluators();
+
+    sandbox.setAdditionalArgument(config.additionalArgument);
 
     sandbox.use(markedDateMixinFactory.createInjectMixin("Date"));
     sandbox.use(markedJsonMixinFactory.createInjectMixin("Json"));

@@ -5,6 +5,7 @@
  */
 
 import { BarkUI } from "../../ui/ui";
+import { BarkGameAdditionalArgument } from "../additional-argument";
 
 export class BarkGameUIController {
 
@@ -26,7 +27,9 @@ export class BarkGameUIController {
 
         return {
 
-            updateField: (key: string, value: any) => this._ui.updateField(key, value),
+            updateField: (_additionalArgument: BarkGameAdditionalArgument, key: string, value: any) => {
+                this._ui.updateField(key, value);
+            },
         };
     }
 }

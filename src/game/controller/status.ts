@@ -4,6 +4,8 @@
  * @description Status
  */
 
+import { BarkGameAdditionalArgument } from "../additional-argument";
+
 export enum BARK_GAME_STATUS {
 
     START = "START",
@@ -53,8 +55,12 @@ export class BarkGameStatusController {
 
         return {
 
-            getStatus: () => this.getStatus(),
-            finish: () => this.setStatus(BARK_GAME_STATUS.FINISH),
+            getStatus: (_additionalArgument: BarkGameAdditionalArgument) => {
+                return this.getStatus();
+            },
+            finish: (_additionalArgument: BarkGameAdditionalArgument) => {
+                return this.setStatus(BARK_GAME_STATUS.FINISH);
+            },
         };
     }
 }
