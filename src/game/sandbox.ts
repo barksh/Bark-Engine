@@ -5,8 +5,9 @@
  */
 
 import { Sandbox } from "@sudoo/marked";
+import { ICandidate } from "../candidate/declare";
 
-export const buildGameSandbox = (): Sandbox => {
+export const createGameSandbox = (candidates: Iterable<ICandidate>): Sandbox => {
 
     const sandbox: Sandbox = Sandbox.fromAllEvaluators();
 
