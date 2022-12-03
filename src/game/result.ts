@@ -23,8 +23,8 @@ export class BarkGameResultBuilder {
         return new BarkGameResultBuilder();
     }
 
-    private _signal: BARK_GAME_RESULT_SIGNAL;
-    private _round: number;
+    private _signal?: BARK_GAME_RESULT_SIGNAL;
+    private _round?: number;
 
     public signal(signal: BARK_GAME_RESULT_SIGNAL): this {
 
@@ -42,8 +42,8 @@ export class BarkGameResultBuilder {
 
         return {
 
-            signal: this._signal,
-            round: this._round,
+            signal: this._signal as BARK_GAME_RESULT_SIGNAL,
+            round: this._round as number,
         };
     }
 }
