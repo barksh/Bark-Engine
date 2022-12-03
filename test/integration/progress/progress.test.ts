@@ -14,6 +14,7 @@ describe('Given (Progress) Game', (): void => {
 
     const chance: Chance.Chance = new Chance('integration-progress');
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const engine: BarkEngine = createProgressIntegrationGame();
 
     it('Placeholder', (): void => {
