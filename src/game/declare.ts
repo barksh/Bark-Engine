@@ -4,7 +4,8 @@
  * @description Declare
  */
 
-export interface IGame {
+export interface IBarkGame {
 
-    readonly name: string;
+    readonly identifier: string;
+    readonly script: string;
 }
