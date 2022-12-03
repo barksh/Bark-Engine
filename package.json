@@ -1,10 +1,10 @@
 {
-  "name": "@barksh/execute-core",
+  "name": "@barksh/engine",
   "version": "3.0.0",
-  "description": "Execute Core",
+  "description": "Engine",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BarkSH/Bark-Execute-Core.git"
+    "url": "git+https://github.com/BarkSH/Bark-Engine.git"
   },
   "keywords": [
     "Game"
@@ -12,7 +12,7 @@
   "author": "WMXPY",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BarkSH/Bark-Execute-Core/issues"
+    "url": "https://github.com/BarkSH/Bark-Engine/issues"
   },
   "homepage": "https://bark.sh",
   "dependencies": {
