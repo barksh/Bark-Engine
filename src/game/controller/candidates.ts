@@ -20,12 +20,12 @@ export class BarkGameCandidatesController {
     private constructor(candidates: Iterable<ICandidate>) {
 
         this._candidates = Array.from(candidates);
-
     }
 
     public createObject(): Record<string, any> {
 
         return {
+
             size: () => this._candidates.length,
         };
     }

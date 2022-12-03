@@ -25,6 +25,7 @@ export class BarkGameUIController {
     public createObject(): Record<string, any> {
 
         return {
+
             updateField: (key: string, value: any) => this._ui.updateField(key, value),
         };
     }
