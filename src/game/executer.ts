@@ -11,6 +11,7 @@ import { BarkGameController } from "./controller/game";
 import { IBarkGame } from "./declare";
 import { BarkGameResultBuilder, BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "./result";
 import { createGameSandbox } from "./sandbox";
+import { BarkGameSession } from "./session";
 
 export interface IBarkGameExecuterConfig {
 
@@ -55,8 +56,11 @@ export class BarkGameExecuter {
             ui: this.ui,
         });
 
+        const session: BarkGameSession = BarkGameSession.create();
+
         const gameSandbox: Sandbox = createGameSandbox({
             gameController,
+            session,
         });
 
         const resultBuilder: BarkGameResultBuilder = BarkGameResultBuilder.fromScratch();
