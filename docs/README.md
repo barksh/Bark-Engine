@@ -1,16 +1,16 @@
-# Bark-Execute-Core
+# Bark-Engine
 
-[![Continuous Integration](https://github.com/BarkSH/Bark-Execute-Core/actions/workflows/ci.yml/badge.svg)](https://github.com/BarkSH/Bark-Execute-Core/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/BarkSH/Bark-Execute-Core/branch/main/graph/badge.svg)](https://codecov.io/gh/BarkSH/Bark-Execute-Core)
-[![npm version](https://badge.fury.io/js/%40barksh%2Fexecute-core.svg)](https://badge.fury.io/js/%40barksh%2Fexecute-core)
-[![downloads](https://img.shields.io/npm/dm/@barksh/execute-core.svg)](https://www.npmjs.com/package/@barksh/execute-core)
+[![Continuous Integration](https://github.com/BarkSH/Bark-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/BarkSH/Bark-Engine/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/BarkSH/Bark-Engine/branch/main/graph/badge.svg)](https://codecov.io/gh/BarkSH/Bark-Engine)
+[![npm version](https://badge.fury.io/js/%40barksh%2Fengine.svg)](https://badge.fury.io/js/%40barksh%2Fengine)
+[![downloads](https://img.shields.io/npm/dm/@barksh/engine.svg)](https://www.npmjs.com/package/@barksh/engine)
 
-Execute Core
+Engine
 
 ## Install
 
 ```sh
-yarn add @barksh/execute-core
+yarn add @barksh/engine
 # Or
-npm install @barksh/execute-core --save
+npm install @barksh/engine --save
 ```
