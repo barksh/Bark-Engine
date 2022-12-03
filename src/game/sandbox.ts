@@ -4,7 +4,7 @@
  * @description Sandbox
  */
 
-import { Sandbox } from "@sudoo/marked";
+import { MarkedMixin, Sandbox } from "@sudoo/marked";
 import { markedDateMixinFactory } from "@sudoo/marked-mixin-date";
 import { markedJsonMixinFactory } from "@sudoo/marked-mixin-json";
 import { markedObjectMixinFactory } from "@sudoo/marked-mixin-object";
@@ -22,7 +22,9 @@ export const createGameSandbox = (
     sandbox.use(markedObjectMixinFactory.createInjectMixin("Object"));
     sandbox.use(markedParseMixinFactory.createInjectMixin("Parse"));
 
-    sandbox.use(gameController.createSandboxMixin());
+    const gameControllerMixin: MarkedMixin = gameController.createSandboxMixin();
+
+    sandbox.use(gameControllerMixin);
 
     return sandbox;
 };

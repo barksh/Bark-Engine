@@ -17,17 +17,44 @@ export class BarkGameStatusController {
         return new BarkGameStatusController();
     }
 
-    private readonly _status: BARK_GAME_STATUS;
+    private _status: BARK_GAME_STATUS;
 
     private constructor() {
 
         this._status = BARK_GAME_STATUS.START;
     }
 
+    public getStatus(): BARK_GAME_STATUS {
+
+        return this._status;
+    }
+
+    public verifyStatus(status: BARK_GAME_STATUS): boolean {
+
+        return this._status === status;
+    }
+
+    public setStatus(status: BARK_GAME_STATUS): void {
+
+        this._status = status;
+    }
+
+    public isComplete(): boolean {
+
+        return this.verifyStatus(BARK_GAME_STATUS.FINISH);
+    }
+
+    public isOnGoing(): boolean {
+
+        return !this.isComplete();
+    }
+
     public createObject(): Record<string, any> {
 
         return {
-            getStatus: () => this._status,
+
+            getStatus: () => this.getStatus(),
+            finish: () => this.setStatus(BARK_GAME_STATUS.FINISH),
         };
     }
 }
