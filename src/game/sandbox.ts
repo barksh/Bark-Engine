@@ -11,5 +11,9 @@ export const createGameSandbox = (candidates: Iterable<ICandidate>): Sandbox => 
 
     const sandbox: Sandbox = Sandbox.fromAllEvaluators();
 
+    const candidateList: ICandidate[] = Array.from(candidates);
+
+    sandbox.inject('candidates', candidateList);
+
     return sandbox;
 };
