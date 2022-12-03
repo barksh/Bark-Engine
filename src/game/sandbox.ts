@@ -11,8 +11,13 @@ import { markedObjectMixinFactory } from "@sudoo/marked-mixin-object";
 import { markedParseMixinFactory } from "@sudoo/marked-mixin-parse";
 import { BarkGameController } from "./controller/game";
 
+export interface ICreateGameSandboxConfig {
+
+    readonly gameController: BarkGameController;
+}
+
 export const createGameSandbox = (
-    gameController: BarkGameController,
+    config: ICreateGameSandboxConfig,
 ): Sandbox => {
 
     const sandbox: Sandbox = Sandbox.fromAllEvaluators();
@@ -22,7 +27,7 @@ export const createGameSandbox = (
     sandbox.use(markedObjectMixinFactory.createInjectMixin("Object"));
     sandbox.use(markedParseMixinFactory.createInjectMixin("Parse"));
 
-    const gameControllerMixin: MarkedMixin = gameController.createSandboxMixin();
+    const gameControllerMixin: MarkedMixin = config.gameController.createSandboxMixin();
 
     sandbox.use(gameControllerMixin);
 

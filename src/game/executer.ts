@@ -18,7 +18,10 @@ export interface IBarkGameExecuterConfig {
 
 export class BarkGameExecuter {
 
-    public static fromGame(game: IBarkGame, config: Partial<IBarkGameExecuterConfig> = {}): BarkGameExecuter {
+    public static fromGame(
+        game: IBarkGame,
+        config: Partial<IBarkGameExecuterConfig> = {},
+    ): BarkGameExecuter {
 
         const fixedConfig: IBarkGameExecuterConfig = {
             roundLimit: 100,
@@ -31,7 +34,10 @@ export class BarkGameExecuter {
     private readonly game: IBarkGame;
     private readonly config: IBarkGameExecuterConfig;
 
-    private constructor(game: IBarkGame, config: IBarkGameExecuterConfig) {
+    private constructor(
+        game: IBarkGame,
+        config: IBarkGameExecuterConfig,
+    ) {
 
         this.game = game;
         this.config = config;
@@ -42,7 +48,10 @@ export class BarkGameExecuter {
         const gameController: BarkGameController = BarkGameController.fromConfig({
             candidates,
         });
-        const gameSandbox: Sandbox = createGameSandbox(gameController);
+
+        const gameSandbox: Sandbox = createGameSandbox({
+            gameController,
+        });
 
         const resultBuilder: BarkGameResultBuilder = BarkGameResultBuilder.fromScratch();
 
