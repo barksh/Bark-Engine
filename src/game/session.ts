@@ -51,6 +51,7 @@ export class BarkGameSession {
 
             sandbox.inject('session', {
 
+                getRound: () => this.currentRound,
                 get: (key: string) => this.get(key),
                 set: (key: string, value: any) => this.set(key, value),
             });

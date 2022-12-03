@@ -8,17 +8,39 @@
 import { expect } from "chai";
 import * as Chance from "chance";
 import { BarkEngine } from "../../../src";
+import { BarkGameExecuter } from "../../../src/game/executer";
+import { BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "../../../src/game/result";
+import { BarkUI } from "../../../src/ui/ui";
 import { createProgressIntegrationGame } from "./progress.game";
 
 describe('Given (Progress) Game', (): void => {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const chance: Chance.Chance = new Chance('integration-progress');
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const engine: BarkEngine = createProgressIntegrationGame();
+    it('should be able to execute progress game - single round', async (): Promise<void> => {
 
-    it('Placeholder', (): void => {
+        const engine: BarkEngine = createProgressIntegrationGame(1);
 
-        expect(chance.string()).to.be.not.equal(chance.string());
+        const ui: BarkUI = BarkUI.fromScratch();
+        const executer: BarkGameExecuter = engine.createExecuter(ui);
+
+        const result: IBarkGameResult = await executer.execute([]);
+
+        expect(result.signal).to.be.equal(BARK_GAME_RESULT_SIGNAL.FINISHED);
+        expect(result.round).to.be.equal(1);
+    });
+
+    it('should be able to execute progress game - multiple round', async (): Promise<void> => {
+
+        const engine: BarkEngine = createProgressIntegrationGame(10);
+
+        const ui: BarkUI = BarkUI.fromScratch();
+        const executer: BarkGameExecuter = engine.createExecuter(ui);
+
+        const result: IBarkGameResult = await executer.execute([]);
+
+        expect(result.signal).to.be.equal(BARK_GAME_RESULT_SIGNAL.FINISHED);
+        expect(result.round).to.be.equal(10);
     });
 });
