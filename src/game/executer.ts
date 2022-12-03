@@ -65,16 +65,14 @@ export class BarkGameExecuter {
 
         const resultBuilder: BarkGameResultBuilder = BarkGameResultBuilder.fromScratch();
 
-        let roundCount: number = 0;
-
         loop: while (gameController.statusController.isOnGoing()) {
 
-            if (roundCount > this.config.roundLimit) {
+            if (session.currentRound > this.config.roundLimit) {
                 resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.ROUND_LIMIT_REACHED);
                 break loop;
             }
 
-            roundCount++;
+            session.nextRound();
 
             await gameSandbox.evaluate(this.game.script);
 
@@ -84,7 +82,7 @@ export class BarkGameExecuter {
             }
         }
 
-        resultBuilder.round(roundCount);
+        resultBuilder.round(session.currentRound);
         return resultBuilder.build();
     }
 }

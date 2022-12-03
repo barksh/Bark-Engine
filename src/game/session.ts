@@ -8,16 +8,30 @@ import { ISandbox, MarkedMixin } from "@sudoo/marked";
 
 export class BarkGameSession {
 
-    public static create(): BarkGameSession {
+    public static create(currentRound: number = 0): BarkGameSession {
 
-        return new BarkGameSession();
+        return new BarkGameSession(currentRound);
     }
 
     private readonly _memory: Map<string, any>;
 
-    private constructor() {
+    private _currentRound: number;
+
+    private constructor(currentRound: number) {
 
         this._memory = new Map<string, any>();
+
+        this._currentRound = currentRound;
+    }
+
+    public get currentRound(): number {
+        return this._currentRound;
+    }
+
+    public nextRound(): this {
+
+        this._currentRound += 1;
+        return this;
     }
 
     public get(key: string): any {
