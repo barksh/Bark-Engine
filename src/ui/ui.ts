@@ -23,4 +23,9 @@ export class BarkUI {
         this._fields.set(key, value);
         return this;
     }
+
+    public getField(key: string): any {
+
+        return this._fields.get(key);
+    }
 }
