@@ -6,16 +6,19 @@
 
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
 import { ICandidate } from "../../candidate/declare";
-import { BarkUI } from "../../ui/ui";
-import { BarkGameCandidatesController } from "./candidates";
-import { BarkGameStatusController } from "./status";
-import { BarkGameUIController } from "./ui";
+import { BarkGameCandidatesController, IBarkGameCandidatesSnapshot } from "./candidates";
+import { BarkGameStatusController, IBarkGameStatusSnapshot } from "./status";
 
 export interface IBarkGameControllerConfig {
 
     readonly startingRound?: number;
     readonly candidates: Iterable<ICandidate>;
-    readonly ui: BarkUI;
+}
+
+export interface IBarkGameSnapshot {
+
+    candidates: IBarkGameCandidatesSnapshot;
+    status: IBarkGameStatusSnapshot;
 }
 
 export class BarkGameController {
@@ -29,7 +32,6 @@ export class BarkGameController {
 
     private readonly _candidatesController: BarkGameCandidatesController;
     private readonly _statusController: BarkGameStatusController;
-    private readonly _uiController: BarkGameUIController;
 
     private constructor(config: IBarkGameControllerConfig) {
 
@@ -37,7 +39,6 @@ export class BarkGameController {
             config.candidates,
         );
         this._statusController = BarkGameStatusController.create(config.startingRound);
-        this._uiController = BarkGameUIController.fromUI(config.ui);
     }
 
     public get candidatesController(): BarkGameCandidatesController {
@@ -46,8 +47,13 @@ export class BarkGameController {
     public get statusController(): BarkGameStatusController {
         return this._statusController;
     }
-    public get uiController(): BarkGameUIController {
-        return this._uiController;
+
+    public createSnapshot(): IBarkGameSnapshot {
+
+        return {
+            candidates: this._candidatesController.createSnapshot(),
+            status: this._statusController.createSnapshot(),
+        };
     }
 
     public createSandboxMixin(): MarkedMixin {
@@ -56,9 +62,8 @@ export class BarkGameController {
 
             sandbox.inject('game', {
 
-                candidates: this._candidatesController.createObject(),
-                status: this._statusController.createObject(),
-                ui: this._uiController.createObject(),
+                candidates: this._candidatesController.createSandboxObject(),
+                status: this._statusController.createSandboxObject(),
             });
         };
     }

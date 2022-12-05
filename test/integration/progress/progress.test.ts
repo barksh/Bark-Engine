@@ -10,7 +10,6 @@ import * as Chance from "chance";
 import { BarkEngine } from "../../../src";
 import { BarkGameExecuter } from "../../../src/game/executer";
 import { BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "../../../src/game/result";
-import { BarkUI } from "../../../src/ui/ui";
 import { createProgressIntegrationGame } from "./progress.game";
 
 describe('Given (Progress) Game', (): void => {
@@ -22,8 +21,7 @@ describe('Given (Progress) Game', (): void => {
 
         const engine: BarkEngine = createProgressIntegrationGame(1);
 
-        const ui: BarkUI = BarkUI.fromScratch();
-        const executer: BarkGameExecuter = engine.createExecuter(ui);
+        const executer: BarkGameExecuter = engine.createExecuter();
 
         const result: IBarkGameResult = await executer.execute([]);
 
@@ -35,8 +33,7 @@ describe('Given (Progress) Game', (): void => {
 
         const engine: BarkEngine = createProgressIntegrationGame(10);
 
-        const ui: BarkUI = BarkUI.fromScratch();
-        const executer: BarkGameExecuter = engine.createExecuter(ui);
+        const executer: BarkGameExecuter = engine.createExecuter();
 
         const result: IBarkGameResult = await executer.execute([]);
 

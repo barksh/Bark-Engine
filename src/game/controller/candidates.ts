@@ -6,8 +6,14 @@
 
 import { ICandidate } from "../../candidate/declare";
 import { BarkGameAdditionalArgument } from "../additional-argument";
+import { IBarkGameController } from "./controller";
 
-export class BarkGameCandidatesController {
+export interface IBarkGameCandidatesSnapshot {
+
+    candidates: ICandidate[];
+}
+
+export class BarkGameCandidatesController implements IBarkGameController<IBarkGameCandidatesSnapshot> {
 
     public static fromCandidates(
         candidates: Iterable<ICandidate>,
@@ -23,7 +29,14 @@ export class BarkGameCandidatesController {
         this._candidates = Array.from(candidates);
     }
 
-    public createObject(): Record<string, any> {
+    public createSnapshot(): IBarkGameCandidatesSnapshot {
+
+        return {
+            candidates: this._candidates,
+        };
+    }
+
+    public createSandboxObject(): Record<string, any> {
 
         return {
 

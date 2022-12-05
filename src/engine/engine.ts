@@ -6,7 +6,6 @@
 
 import { IBarkGame } from "../game/declare";
 import { BarkGameExecuter } from "../game/executer";
-import { BarkUI } from "../ui/ui";
 
 export class BarkEngine {
 
@@ -22,8 +21,8 @@ export class BarkEngine {
         this.game = game;
     }
 
-    public createExecuter(ui: BarkUI): BarkGameExecuter {
+    public createExecuter(): BarkGameExecuter {
 
-        return BarkGameExecuter.fromGame(this.game, ui);
+        return BarkGameExecuter.fromGame(this.game);
     }
 }

@@ -5,6 +5,7 @@
  */
 
 import { BarkGameAdditionalArgument } from "../additional-argument";
+import { IBarkGameController } from "./controller";
 
 export enum BARK_GAME_STATUS {
 
@@ -12,7 +13,13 @@ export enum BARK_GAME_STATUS {
     FINISH = "FINISH",
 }
 
-export class BarkGameStatusController {
+export interface IBarkGameStatusSnapshot {
+
+    status: BARK_GAME_STATUS;
+    currentRound: number;
+}
+
+export class BarkGameStatusController implements IBarkGameController<IBarkGameStatusSnapshot> {
 
     public static create(startingRound: number = 0): BarkGameStatusController {
 
@@ -63,7 +70,15 @@ export class BarkGameStatusController {
         return !this.isComplete();
     }
 
-    public createObject(): Record<string, any> {
+    public createSnapshot(): IBarkGameStatusSnapshot {
+
+        return {
+            status: this._status,
+            currentRound: this._currentRound,
+        };
+    }
+
+    public createSandboxObject(): Record<string, any> {
 
         return {
 

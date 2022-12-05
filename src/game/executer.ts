@@ -7,7 +7,6 @@
 import { END_SIGNAL, MarkedResult, Sandbox } from "@sudoo/marked";
 import { ICandidate } from "../candidate/declare";
 import { BarkSession } from "../session/session";
-import { BarkUI } from "../ui/ui";
 import { BarkGameAdditionalArgument } from "./additional-argument";
 import { BarkGameController } from "./controller/game";
 import { IBarkGame } from "./declare";
@@ -23,7 +22,6 @@ export class BarkGameExecuter {
 
     public static fromGame(
         game: IBarkGame,
-        ui: BarkUI,
         config: Partial<IBarkGameExecuterConfig> = {},
     ): BarkGameExecuter {
 
@@ -32,21 +30,18 @@ export class BarkGameExecuter {
             ...config,
         };
 
-        return new BarkGameExecuter(game, ui, fixedConfig);
+        return new BarkGameExecuter(game, fixedConfig);
     }
 
     private readonly game: IBarkGame;
-    private readonly ui: BarkUI;
     private readonly config: IBarkGameExecuterConfig;
 
     private constructor(
         game: IBarkGame,
-        ui: BarkUI,
         config: IBarkGameExecuterConfig,
     ) {
 
         this.game = game;
-        this.ui = ui;
         this.config = config;
     }
 
@@ -56,7 +51,6 @@ export class BarkGameExecuter {
 
         const gameController: BarkGameController = BarkGameController.fromConfig({
             candidates,
-            ui: this.ui,
         });
 
         const session: BarkSession = BarkSession.create();
