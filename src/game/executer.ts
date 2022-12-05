@@ -65,42 +65,51 @@ export class BarkGameExecuter {
 
         loop: while (gameController.statusController.isOnGoing()) {
 
-            if (gameController.statusController.getCurrentRound() > this.config.roundLimit) {
-                resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.ROUND_LIMIT_REACHED);
-                break loop;
-            }
+            try {
 
-            gameController.statusController.nextRound();
+                if (gameController.statusController.getCurrentRound() > this.config.roundLimit) {
+                    resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.ROUND_LIMIT_REACHED);
+                    break loop;
+                }
 
-            const gameSandbox: Sandbox = createGameSandbox({
-                additionalArgument,
-                gameController,
-                session,
-            });
+                gameController.statusController.nextRound();
 
-            const evaluateResult: MarkedResult = await gameSandbox.evaluate(this.game.script);
+                const gameSandbox: Sandbox = createGameSandbox({
+                    additionalArgument,
+                    gameController,
+                    session,
+                });
 
-            if (evaluateResult.signal === END_SIGNAL.FAILED) {
+                const evaluateResult: MarkedResult = await gameSandbox.evaluate(this.game.script);
+
+                if (evaluateResult.signal === END_SIGNAL.FAILED) {
+                    resultBuilder
+                        .signal(BARK_GAME_RESULT_SIGNAL.FAILED)
+                        .reason(evaluateResult.error);
+                    break loop;
+                }
+
+                if (evaluateResult.signal === END_SIGNAL.EXCEPTION) {
+                    resultBuilder
+                        .signal(BARK_GAME_RESULT_SIGNAL.EXCEPTION)
+                        .reason(evaluateResult.exception);
+                    break loop;
+                }
+
+                if (evaluateResult.signal === END_SIGNAL.TERMINATED) {
+                    resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.TERMINATED);
+                    break loop;
+                }
+
+                if (gameController.statusController.isComplete()) {
+                    resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.FINISHED);
+                    break loop;
+                }
+            } catch (error) {
+
                 resultBuilder
                     .signal(BARK_GAME_RESULT_SIGNAL.FAILED)
-                    .reason(evaluateResult.error);
-                break loop;
-            }
-
-            if (evaluateResult.signal === END_SIGNAL.EXCEPTION) {
-                resultBuilder
-                    .signal(BARK_GAME_RESULT_SIGNAL.FAILED)
-                    .reason(evaluateResult.exception);
-                break loop;
-            }
-
-            if (evaluateResult.signal === END_SIGNAL.TERMINATED) {
-                resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.TERMINATED);
-                break loop;
-            }
-
-            if (gameController.statusController.isComplete()) {
-                resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.FINISHED);
+                    .reason(error);
                 break loop;
             }
         }

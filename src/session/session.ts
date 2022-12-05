@@ -6,6 +6,7 @@
 
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
 import { BarkGameAdditionalArgument } from "../game/additional-argument";
+import { BarkSessionListener, SBarkSessionListenerEmptyValue } from "./declare";
 
 export class BarkSession {
 
@@ -16,9 +17,13 @@ export class BarkSession {
 
     private readonly _memory: Map<string, any>;
 
+    private readonly _listeners: Map<string, BarkSessionListener[]>;
+
     private constructor() {
 
         this._memory = new Map<string, any>();
+
+        this._listeners = new Map<string, BarkSessionListener[]>();
     }
 
     public get(key: string): any {
@@ -27,6 +32,21 @@ export class BarkSession {
     }
 
     public set(key: string, value: any): this {
+
+        const previousValue: any | typeof SBarkSessionListenerEmptyValue =
+            this._memory.has(key)
+                ? this._memory.get(key)
+                : SBarkSessionListenerEmptyValue;
+
+        if (this._listeners.has(key)) {
+
+            const listeners: BarkSessionListener[] =
+                this._listeners.get(key) as BarkSessionListener[];
+
+            for (const listener of listeners) {
+                listener(previousValue, value);
+            }
+        }
 
         this._memory.set(key, value);
         return this;
