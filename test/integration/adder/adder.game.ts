@@ -14,11 +14,15 @@ export const createAdderIntegrationGame = (): BarkEngine => {
 
         identifier: 'adder',
         script: [
+            `let counter = 0`,
+            `while (counter < 10) {`,
             `for (const candidate of game.candidates.getCandidates()) {`,
-            `game.candidates.executeCandidateScript(candidate, "input", () => {`,
-            `game.status.finish();`,
+            `game.candidates.executeCandidateScript(candidate, counter, () => {`,
+            `counter++;`,
             `});`,
             `}`,
+            `}`,
+            `game.status.finish();`
         ].join(New_Line_Character),
     });
 };

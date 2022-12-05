@@ -31,6 +31,13 @@ export interface IBarkLogRecord {
     readonly args: any[];
 }
 
+export interface IBarkLogFindRecordCondition {
+
+    readonly scope?: BARK_LOG_SCOPE;
+    readonly category?: string;
+    readonly level?: BARK_LOG_LEVEL;
+}
+
 export type BarkLogListener = (record: IBarkLogRecord) => void;
 
 export class BarkLog {
@@ -55,6 +62,32 @@ export class BarkLog {
 
     public get records(): IBarkLogRecord[] {
         return this._logRecords;
+    }
+
+    public findRecords(condition: IBarkLogFindRecordCondition): IBarkLogRecord[] {
+
+        return this._logRecords.filter((record: IBarkLogRecord) => {
+
+            if (typeof condition.scope !== 'undefined') {
+                if (record.scope !== condition.scope) {
+                    return false;
+                }
+            }
+
+            if (typeof condition.level !== 'undefined') {
+                if (record.level !== condition.level) {
+                    return false;
+                }
+            }
+
+            if (typeof condition.category !== 'undefined') {
+                if (record.category !== condition.category) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
     }
 
     public addListener(listener: BarkLogListener): this {

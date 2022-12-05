@@ -8,7 +8,7 @@
 import { expect } from "chai";
 import * as Chance from "chance";
 import { BarkEngine, BarkGameExecuter, IBarkCandidate, IBarkGameResult } from "../../../src";
-import { BARK_LOG_LEVEL, BARK_LOG_SCOPE } from "../../../src/log/log";
+import { BARK_LOG_SCOPE } from "../../../src/log/log";
 import { verifyGameSignalFinished } from "../../util/verify-result-signal";
 import { createAdderIntegrationCandidate } from "./adder.candidate";
 import { createAdderIntegrationGame } from "./adder.game";
@@ -34,14 +34,9 @@ describe('Given (Adder) Game', (): void => {
 
         verifyGameSignalFinished(result);
 
-        expect(executer.log.records).to.be.deep.equal([{
+        expect(executer.log.findRecords({
             scope: BARK_LOG_SCOPE.CANDIDATE,
-            category: candidateIdentifier,
-            level: BARK_LOG_LEVEL.INFO,
-            args: [
-                "input",
-            ],
-        }]);
+        })).to.have.lengthOf(10);
         expect(result.round).to.be.equal(1);
     });
 });
