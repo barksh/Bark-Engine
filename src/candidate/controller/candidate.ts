@@ -4,6 +4,7 @@
  * @description Candidate
  */
 
+import { ISandbox, MarkedMixin } from "@sudoo/marked";
 import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "../declare";
 import { BarkCandidateActionController, IBarkCandidateActionSnapshot } from "./action";
 import { BarkCandidateInputController, IBarkCandidateInputSnapshot } from "./input";
@@ -56,6 +57,15 @@ export class BarkCandidateController {
 
             input: this._inputController.createSnapshot(),
             action: this._actionController.createSnapshot(),
+        };
+    }
+
+    public createSandboxMixin(): MarkedMixin {
+
+        return (sandbox: ISandbox) => {
+
+            sandbox.inject('input', this._inputController.createSandboxObject());
+            sandbox.inject('action', this._actionController.createSandboxObject());
         };
     }
 }

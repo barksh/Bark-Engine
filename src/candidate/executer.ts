@@ -4,8 +4,11 @@
  * @description Executer
  */
 
+import { MarkedResult, Sandbox } from "@sudoo/marked";
+import { BarkCandidateAdditionalArgument } from "./additional-argument";
 import { BarkCandidateController, IBarkCandidateSnapshot } from "./controller/candidate";
 import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "./declare";
+import { createCandidateSandbox } from "./sandbox";
 
 export interface IBarkCandidateExecuterConfig {
 
@@ -39,13 +42,24 @@ export class BarkCandidateExecuter {
         });
     }
 
-    public async execute(): Promise<void> {
-
-        return;
-    }
-
     public get candidate(): IBarkCandidate {
         return this._candidate;
+    }
+
+    public async execute(): Promise<MarkedResult> {
+
+        const additionalArgument: BarkCandidateAdditionalArgument =
+            BarkCandidateAdditionalArgument.create();
+
+        const candidateSandbox: Sandbox = createCandidateSandbox({
+
+            additionalArgument,
+            candidateController: this._controller,
+        });
+
+        const evaluateResult: MarkedResult = await candidateSandbox.evaluate(this._candidate.script);
+
+        return evaluateResult;
     }
 
     public createSnapshot(): IBarkCandidateSnapshot {
