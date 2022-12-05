@@ -7,6 +7,7 @@
 import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "../../candidate/declare";
 import { BarkCandidateExecuter } from "../../candidate/executer";
 import { BarkCandidateResultBuilder, BARK_CANDIDATE_RESULT_SIGNAL, IBarkCandidateResult } from "../../candidate/result";
+import { BarkLog } from "../../log/log";
 import { BarkGameAdditionalArgument } from "../additional-argument";
 import { IBarkGameController } from "./controller";
 
@@ -19,15 +20,23 @@ export class BarkGameCandidatesController implements IBarkGameController<IBarkGa
 
     public static fromCandidates(
         candidates: IBarkCandidate[],
+        log: BarkLog,
     ): BarkGameCandidatesController {
 
-        return new BarkGameCandidatesController(candidates);
+        return new BarkGameCandidatesController(candidates, log);
     }
+
+    private readonly _log: BarkLog;
 
     private readonly _indexMap: Map<number, string>;
     private readonly _candidatesMap: Map<string, IBarkCandidate>;
 
-    private constructor(candidates: IBarkCandidate[]) {
+    private constructor(
+        candidates: IBarkCandidate[],
+        log: BarkLog,
+    ) {
+
+        this._log = log;
 
         this._indexMap = new Map();
         this._candidatesMap = new Map();
@@ -73,7 +82,7 @@ export class BarkGameCandidatesController implements IBarkGameController<IBarkGa
             actionListener,
         });
 
-        return await executer.execute();
+        return await executer.execute(this._log);
     }
 
     public createSnapshot(): IBarkGameCandidatesSnapshot {

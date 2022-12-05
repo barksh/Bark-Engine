@@ -5,6 +5,7 @@
  */
 
 import { END_SIGNAL, MarkedResult, Sandbox } from "@sudoo/marked";
+import { BarkLog } from "../log/log";
 import { BarkCandidateAdditionalArgument } from "./additional-argument";
 import { BarkCandidateController, IBarkCandidateSnapshot } from "./controller/candidate";
 import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "./declare";
@@ -47,7 +48,7 @@ export class BarkCandidateExecuter {
         return this._candidate;
     }
 
-    public async execute(): Promise<IBarkCandidateResult> {
+    public async execute(log: BarkLog): Promise<IBarkCandidateResult> {
 
         const resultBuilder: BarkCandidateResultBuilder = BarkCandidateResultBuilder.fromScratch();
 
@@ -57,6 +58,9 @@ export class BarkCandidateExecuter {
                 BarkCandidateAdditionalArgument.create();
 
             const candidateSandbox: Sandbox = createCandidateSandbox({
+
+                log,
+                identifier: this._candidate.identifier,
 
                 additionalArgument,
                 candidateController: this._controller,

@@ -7,6 +7,12 @@
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
 import { BarkGameAdditionalArgument } from "../game/additional-argument";
 
+export enum BARK_LOG_SCOPE {
+
+    GAME = "GAME",
+    CANDIDATE = "CANDIDATE",
+}
+
 export enum BARK_LOG_LEVEL {
 
     DEBUG = 8,
@@ -18,11 +24,14 @@ export enum BARK_LOG_LEVEL {
 
 export interface IBarkLogRecord {
 
+    readonly scope: BARK_LOG_SCOPE;
+    readonly category?: string;
+
     readonly level: BARK_LOG_LEVEL;
     readonly args: any[];
 }
 
-export type BarkLogListener = (args: any[]) => void;
+export type BarkLogListener = (record: IBarkLogRecord) => void;
 
 export class BarkLog {
 
@@ -50,42 +59,50 @@ export class BarkLog {
         return this;
     }
 
-    public createSandboxMixin(): MarkedMixin {
+    public createSandboxMixin(scope: BARK_LOG_SCOPE, category?: string): MarkedMixin {
 
         return (sandbox: ISandbox) => {
 
             sandbox.inject('log', {
 
                 debug: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.DEBUG, ...args);
+                    return this._log(BARK_LOG_LEVEL.DEBUG, scope, category, ...args);
                 },
                 verbose: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.VERBOSE, ...args);
+                    return this._log(BARK_LOG_LEVEL.VERBOSE, scope, category, ...args);
                 },
                 info: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.INFO, ...args);
+                    return this._log(BARK_LOG_LEVEL.INFO, scope, category, ...args);
                 },
                 warn: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.WARN, ...args);
+                    return this._log(BARK_LOG_LEVEL.WARN, scope, category, ...args);
                 },
                 error: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.ERROR, ...args);
+                    return this._log(BARK_LOG_LEVEL.ERROR, scope, category, ...args);
                 },
             });
         };
     }
 
-    private _log(level: BARK_LOG_LEVEL, ...args: any[]): this {
+    private _log(
+        level: BARK_LOG_LEVEL,
+        scope: BARK_LOG_SCOPE,
+        category?: string,
+        ...args: any[]
+    ): this {
 
-        this._logs.push({
+        const logRecord: IBarkLogRecord = {
+            scope,
+            category,
             level,
             args,
-        });
+        };
 
+        this._logs.push(logRecord);
         this._listeners.forEach((listener: BarkLogListener) => {
 
             if (this._level <= level) {
-                listener(args);
+                listener(logRecord);
             }
         });
 

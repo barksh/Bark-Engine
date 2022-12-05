@@ -6,6 +6,7 @@
 
 import { END_SIGNAL, MarkedResult, Sandbox } from "@sudoo/marked";
 import { IBarkCandidate } from "../candidate/declare";
+import { BarkLog, BARK_LOG_LEVEL } from "../log/log";
 import { BarkSession } from "../session/session";
 import { BarkGameAdditionalArgument } from "./additional-argument";
 import { BarkGameController } from "./controller/game";
@@ -16,6 +17,8 @@ import { createGameSandbox } from "./sandbox";
 export interface IBarkGameExecuterConfig {
 
     readonly roundLimit: number;
+
+    readonly logLevel: BARK_LOG_LEVEL;
 }
 
 export class BarkGameExecuter {
@@ -27,6 +30,7 @@ export class BarkGameExecuter {
 
         const fixedConfig: IBarkGameExecuterConfig = {
             roundLimit: 100,
+            logLevel: BARK_LOG_LEVEL.INFO,
             ...config,
         };
 
@@ -50,9 +54,12 @@ export class BarkGameExecuter {
         const additionalArgument: BarkGameAdditionalArgument =
             BarkGameAdditionalArgument.create();
 
+        const log: BarkLog = BarkLog.fromLevel(this.config.logLevel);
+
         const gameController: BarkGameController =
             BarkGameController.fromConfig({
                 candidates,
+                log,
             });
 
         const session: BarkSession = BarkSession.create();
@@ -71,6 +78,7 @@ export class BarkGameExecuter {
                 gameController.statusController.nextRound();
 
                 const gameSandbox: Sandbox = createGameSandbox({
+                    log,
                     additionalArgument,
                     gameController,
                     session,
