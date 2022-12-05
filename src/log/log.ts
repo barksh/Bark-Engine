@@ -59,7 +59,10 @@ export class BarkLog {
         return this;
     }
 
-    public createSandboxMixin(scope: BARK_LOG_SCOPE, category?: string): MarkedMixin {
+    public createSandboxMixin(
+        scope: BARK_LOG_SCOPE,
+        category?: string,
+    ): MarkedMixin {
 
         return (sandbox: ISandbox) => {
 

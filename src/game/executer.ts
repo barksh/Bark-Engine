@@ -37,6 +37,8 @@ export class BarkGameExecuter {
         return new BarkGameExecuter(game, fixedConfig);
     }
 
+    private readonly _log: BarkLog;
+
     private readonly game: IBarkGame;
     private readonly config: IBarkGameExecuterConfig;
 
@@ -45,8 +47,14 @@ export class BarkGameExecuter {
         config: IBarkGameExecuterConfig,
     ) {
 
+        this._log = BarkLog.fromLevel(config.logLevel);
+
         this.game = game;
         this.config = config;
+    }
+
+    public get log(): BarkLog {
+        return this._log;
     }
 
     public async execute(candidates: IBarkCandidate[]): Promise<IBarkGameResult> {
@@ -54,12 +62,10 @@ export class BarkGameExecuter {
         const additionalArgument: BarkGameAdditionalArgument =
             BarkGameAdditionalArgument.create();
 
-        const log: BarkLog = BarkLog.fromLevel(this.config.logLevel);
-
         const gameController: BarkGameController =
             BarkGameController.fromConfig({
                 candidates,
-                log,
+                log: this._log,
             });
 
         const session: BarkSession = BarkSession.create();
@@ -78,7 +84,7 @@ export class BarkGameExecuter {
                 gameController.statusController.nextRound();
 
                 const gameSandbox: Sandbox = createGameSandbox({
-                    log,
+                    log: this._log,
                     additionalArgument,
                     gameController,
                     session,

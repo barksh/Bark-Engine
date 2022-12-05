@@ -7,7 +7,8 @@
 
 import { expect } from "chai";
 import * as Chance from "chance";
-import { BarkEngine, BarkGameExecuter, BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "../../../src";
+import { BarkEngine, BarkGameExecuter, IBarkGameResult } from "../../../src";
+import { verifyGameSignalFinished } from "../../util/verify-result-signal";
 import { createProgressIntegrationGame } from "./progress.game";
 
 describe('Given (Progress) Game', (): void => {
@@ -23,7 +24,7 @@ describe('Given (Progress) Game', (): void => {
 
         const result: IBarkGameResult = await executer.execute([]);
 
-        expect(result.signal).to.be.equal(BARK_GAME_RESULT_SIGNAL.FINISHED);
+        verifyGameSignalFinished(result);
         expect(result.round).to.be.equal(1);
     });
 
@@ -35,7 +36,7 @@ describe('Given (Progress) Game', (): void => {
 
         const result: IBarkGameResult = await executer.execute([]);
 
-        expect(result.signal).to.be.equal(BARK_GAME_RESULT_SIGNAL.FINISHED);
+        verifyGameSignalFinished(result);
         expect(result.round).to.be.equal(10);
     });
 });

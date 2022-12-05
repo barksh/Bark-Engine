@@ -8,15 +8,13 @@
 import { New_Line_Character } from "@sudoo/marked";
 import { BarkEngine } from "../../../src";
 
-export const createProgressIntegrationGame = (round: number): BarkEngine => {
+export const createAdderIntegrationGame = (): BarkEngine => {
 
     return BarkEngine.fromGame({
 
         identifier: 'adder',
         script: [
-            `if (game.candidates.getCandidates() === ${round}) {`,
-            `game.status.finish();`,
-            `}`,
+            `log.info(game.candidates.getCandidates())`,
         ].join(New_Line_Character),
     });
 };
