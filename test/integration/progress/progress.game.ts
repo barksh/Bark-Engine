@@ -14,7 +14,7 @@ export const createProgressIntegrationGame = (round: number): BarkEngine => {
 
         identifier: 'progress',
         script: [
-            `if (session.getRound() === ${round}) {`,
+            `if (game.status.getRound() === ${round}) {`,
             `game.status.finish();`,
             `}`,
         ].join(New_Line_Character),

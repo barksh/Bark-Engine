@@ -4,7 +4,7 @@
  * @description Game Executer
  */
 
-import { Sandbox } from "@sudoo/marked";
+import { END_SIGNAL, MarkedResult, Sandbox } from "@sudoo/marked";
 import { ICandidate } from "../candidate/declare";
 import { BarkSession } from "../session/session";
 import { BarkUI } from "../ui/ui";
@@ -78,7 +78,26 @@ export class BarkGameExecuter {
                 session,
             });
 
-            await gameSandbox.evaluate(this.game.script);
+            const evaluateResult: MarkedResult = await gameSandbox.evaluate(this.game.script);
+
+            if (evaluateResult.signal === END_SIGNAL.FAILED) {
+                resultBuilder
+                    .signal(BARK_GAME_RESULT_SIGNAL.FAILED)
+                    .reason(evaluateResult.error);
+                break loop;
+            }
+
+            if (evaluateResult.signal === END_SIGNAL.EXCEPTION) {
+                resultBuilder
+                    .signal(BARK_GAME_RESULT_SIGNAL.FAILED)
+                    .reason(evaluateResult.exception);
+                break loop;
+            }
+
+            if (evaluateResult.signal === END_SIGNAL.TERMINATED) {
+                resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.TERMINATED);
+                break loop;
+            }
 
             if (gameController.statusController.isComplete()) {
                 resultBuilder.signal(BARK_GAME_RESULT_SIGNAL.FINISHED);
