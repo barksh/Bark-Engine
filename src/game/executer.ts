@@ -47,11 +47,13 @@ export class BarkGameExecuter {
 
     public async execute(candidates: IBarkCandidate[]): Promise<IBarkGameResult> {
 
-        const additionalArgument: BarkGameAdditionalArgument = BarkGameAdditionalArgument.create();
+        const additionalArgument: BarkGameAdditionalArgument =
+            BarkGameAdditionalArgument.create();
 
-        const gameController: BarkGameController = BarkGameController.fromConfig({
-            candidates,
-        });
+        const gameController: BarkGameController =
+            BarkGameController.fromConfig({
+                candidates,
+            });
 
         const session: BarkSession = BarkSession.create();
 

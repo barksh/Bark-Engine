@@ -1,13 +1,13 @@
 /**
  * @author WMXPY
- * @namespace Game_Log
+ * @namespace Log
  * @description Log
  */
 
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
-import { BarkGameAdditionalArgument } from "../additional-argument";
+import { BarkGameAdditionalArgument } from "../game/additional-argument";
 
-export enum BARK_GAME_LOG_LEVEL {
+export enum BARK_LOG_LEVEL {
 
     DEBUG = 8,
     VERBOSE = 16,
@@ -16,27 +16,27 @@ export enum BARK_GAME_LOG_LEVEL {
     ERROR = 128,
 }
 
-export interface IBarkGameLogRecord {
+export interface IBarkLogRecord {
 
-    readonly level: BARK_GAME_LOG_LEVEL;
+    readonly level: BARK_LOG_LEVEL;
     readonly args: any[];
 }
 
-export type BarkGameLogListener = (args: any[]) => void;
+export type BarkLogListener = (args: any[]) => void;
 
-export class BarkGameLog {
+export class BarkLog {
 
-    public static fromLevel(level: BARK_GAME_LOG_LEVEL): BarkGameLog {
+    public static fromLevel(level: BARK_LOG_LEVEL): BarkLog {
 
-        return new BarkGameLog(level);
+        return new BarkLog(level);
     }
 
-    private readonly _level: BARK_GAME_LOG_LEVEL;
+    private readonly _level: BARK_LOG_LEVEL;
 
-    private readonly _logs: IBarkGameLogRecord[];
-    private readonly _listeners: BarkGameLogListener[];
+    private readonly _logs: IBarkLogRecord[];
+    private readonly _listeners: BarkLogListener[];
 
-    private constructor(level: BARK_GAME_LOG_LEVEL) {
+    private constructor(level: BARK_LOG_LEVEL) {
 
         this._level = level;
 
@@ -44,7 +44,7 @@ export class BarkGameLog {
         this._listeners = [];
     }
 
-    public addListener(listener: BarkGameLogListener): this {
+    public addListener(listener: BarkLogListener): this {
 
         this._listeners.push(listener);
         return this;
@@ -57,32 +57,32 @@ export class BarkGameLog {
             sandbox.inject('log', {
 
                 debug: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_GAME_LOG_LEVEL.DEBUG, ...args);
+                    return this._log(BARK_LOG_LEVEL.DEBUG, ...args);
                 },
                 verbose: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_GAME_LOG_LEVEL.VERBOSE, ...args);
+                    return this._log(BARK_LOG_LEVEL.VERBOSE, ...args);
                 },
                 info: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_GAME_LOG_LEVEL.INFO, ...args);
+                    return this._log(BARK_LOG_LEVEL.INFO, ...args);
                 },
                 warn: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_GAME_LOG_LEVEL.WARN, ...args);
+                    return this._log(BARK_LOG_LEVEL.WARN, ...args);
                 },
                 error: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_GAME_LOG_LEVEL.ERROR, ...args);
+                    return this._log(BARK_LOG_LEVEL.ERROR, ...args);
                 },
             });
         };
     }
 
-    private _log(level: BARK_GAME_LOG_LEVEL, ...args: any[]): this {
+    private _log(level: BARK_LOG_LEVEL, ...args: any[]): this {
 
         this._logs.push({
             level,
             args,
         });
 
-        this._listeners.forEach((listener: BarkGameLogListener) => {
+        this._listeners.forEach((listener: BarkLogListener) => {
 
             if (this._level <= level) {
                 listener(args);
