@@ -1,38 +1,24 @@
 /**
  * @author WMXPY
- * @namespace Game
+ * @namespace Session
  * @description Session
  */
 
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
-import { BarkGameAdditionalArgument } from "./additional-argument";
+import { BarkGameAdditionalArgument } from "../game/additional-argument";
 
-export class BarkGameSession {
+export class BarkSession {
 
-    public static create(currentRound: number = 0): BarkGameSession {
+    public static create(): BarkSession {
 
-        return new BarkGameSession(currentRound);
+        return new BarkSession();
     }
 
     private readonly _memory: Map<string, any>;
 
-    private _currentRound: number;
-
-    private constructor(currentRound: number) {
+    private constructor() {
 
         this._memory = new Map<string, any>();
-
-        this._currentRound = currentRound;
-    }
-
-    public get currentRound(): number {
-        return this._currentRound;
-    }
-
-    public nextRound(): this {
-
-        this._currentRound += 1;
-        return this;
     }
 
     public get(key: string): any {
@@ -52,9 +38,6 @@ export class BarkGameSession {
 
             sandbox.inject('session', {
 
-                getRound: (_additionalArgument: BarkGameAdditionalArgument) => {
-                    return this.currentRound;
-                },
                 get: (_additionalArgument: BarkGameAdditionalArgument, key: string) => {
                     return this.get(key);
                 },
