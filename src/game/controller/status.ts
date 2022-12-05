@@ -82,13 +82,19 @@ export class BarkGameStatusController implements IBarkGameController<IBarkGameSt
 
         return {
 
-            getRound: (_additionalArgument: BarkGameAdditionalArgument) => {
+            getRound: (
+                _additionalArgument: BarkGameAdditionalArgument,
+            ) => {
                 return this._currentRound;
             },
-            getStatus: (_additionalArgument: BarkGameAdditionalArgument) => {
+            getStatus: (
+                _additionalArgument: BarkGameAdditionalArgument,
+            ) => {
                 return this.getStatus();
             },
-            finish: (_additionalArgument: BarkGameAdditionalArgument) => {
+            finish: (
+                _additionalArgument: BarkGameAdditionalArgument,
+            ) => {
                 return this.setStatus(BARK_GAME_STATUS.FINISH);
             },
         };

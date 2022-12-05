@@ -89,8 +89,25 @@ export class BarkGameCandidatesController implements IBarkGameController<IBarkGa
 
         return {
 
-            size: () => (_additionalArgument: BarkGameAdditionalArgument) => {
-                return this._candidatesMap.size;
+            getCandidates: () => (
+                _additionalArgument: BarkGameAdditionalArgument,
+            ) => {
+                return [
+                    ...this._candidatesMap.keys(),
+                ];
+            },
+            executeCandidateScript: (
+                _additionalArgument: BarkGameAdditionalArgument,
+                identifier: string,
+                inputParameters: BarkCandidateInputParameters,
+                actionListener: BarkActionListener,
+            ) => {
+
+                return this.executeByIdentifier(
+                    identifier,
+                    inputParameters,
+                    actionListener,
+                );
             },
         };
     }
