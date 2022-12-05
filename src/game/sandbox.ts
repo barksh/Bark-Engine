@@ -9,16 +9,16 @@ import { markedDateMixinFactory } from "@sudoo/marked-mixin-date";
 import { markedJsonMixinFactory } from "@sudoo/marked-mixin-json";
 import { markedObjectMixinFactory } from "@sudoo/marked-mixin-object";
 import { markedParseMixinFactory } from "@sudoo/marked-mixin-parse";
+import { BarkSession } from "../session/session";
 import { BarkGameAdditionalArgument } from "./additional-argument";
 import { BarkGameController } from "./controller/game";
-import { BarkGameSession } from "./session";
 
 export interface ICreateGameSandboxConfig {
 
     readonly additionalArgument: BarkGameAdditionalArgument;
 
     readonly gameController: BarkGameController;
-    readonly session: BarkGameSession;
+    readonly session: BarkSession;
 }
 
 export const createGameSandbox = (

@@ -13,6 +13,7 @@ import { BarkGameUIController } from "./ui";
 
 export interface IBarkGameControllerConfig {
 
+    readonly startingRound?: number;
     readonly candidates: Iterable<ICandidate>;
     readonly ui: BarkUI;
 }
@@ -35,7 +36,7 @@ export class BarkGameController {
         this._candidatesController = BarkGameCandidatesController.fromCandidates(
             config.candidates,
         );
-        this._statusController = BarkGameStatusController.create();
+        this._statusController = BarkGameStatusController.create(config.startingRound);
         this._uiController = BarkGameUIController.fromUI(config.ui);
     }
 
