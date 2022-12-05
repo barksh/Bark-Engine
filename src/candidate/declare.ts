@@ -4,7 +4,8 @@
  * @description Declare
  */
 
-export interface ICandidate {
+export interface IBarkCandidate {
 
     readonly identifier: string;
+    readonly script: string;
 }

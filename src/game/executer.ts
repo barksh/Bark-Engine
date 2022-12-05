@@ -1,11 +1,11 @@
 /**
  * @author WMXPY
  * @namespace Game
- * @description Game Executer
+ * @description Executer
  */
 
 import { END_SIGNAL, MarkedResult, Sandbox } from "@sudoo/marked";
-import { ICandidate } from "../candidate/declare";
+import { IBarkCandidate } from "../candidate/declare";
 import { BarkSession } from "../session/session";
 import { BarkGameAdditionalArgument } from "./additional-argument";
 import { BarkGameController } from "./controller/game";
@@ -45,7 +45,7 @@ export class BarkGameExecuter {
         this.config = config;
     }
 
-    public async execute(candidates: Iterable<ICandidate>): Promise<IBarkGameResult> {
+    public async execute(candidates: Iterable<IBarkCandidate>): Promise<IBarkGameResult> {
 
         const additionalArgument: BarkGameAdditionalArgument = BarkGameAdditionalArgument.create();
 

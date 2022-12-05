@@ -7,9 +7,7 @@
 
 import { expect } from "chai";
 import * as Chance from "chance";
-import { BarkEngine } from "../../../src";
-import { BarkGameExecuter } from "../../../src/game/executer";
-import { BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "../../../src/game/result";
+import { BarkEngine, BarkGameExecuter, BARK_GAME_RESULT_SIGNAL, IBarkGameResult } from "../../../src";
 import { createProgressIntegrationGame } from "./progress.game";
 
 describe('Given (Progress) Game', (): void => {

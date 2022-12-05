@@ -5,14 +5,14 @@
  */
 
 import { ISandbox, MarkedMixin } from "@sudoo/marked";
-import { ICandidate } from "../../candidate/declare";
+import { IBarkCandidate } from "../../candidate/declare";
 import { BarkGameCandidatesController, IBarkGameCandidatesSnapshot } from "./candidates";
 import { BarkGameStatusController, IBarkGameStatusSnapshot } from "./status";
 
 export interface IBarkGameControllerConfig {
 
     readonly startingRound?: number;
-    readonly candidates: Iterable<ICandidate>;
+    readonly candidates: Iterable<IBarkCandidate>;
 }
 
 export interface IBarkGameSnapshot {
