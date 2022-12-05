@@ -17,13 +17,13 @@ export class BarkSession {
 
     private readonly _memory: Map<string, any>;
 
-    private readonly _listeners: Map<string, BarkSessionListener[]>;
+    private readonly _listeners: Map<string, Set<BarkSessionListener>>;
 
     private constructor() {
 
         this._memory = new Map<string, any>();
 
-        this._listeners = new Map<string, BarkSessionListener[]>();
+        this._listeners = new Map<string, Set<BarkSessionListener>>();
     }
 
     public get(key: string): any {
@@ -33,22 +33,44 @@ export class BarkSession {
 
     public set(key: string, value: any): this {
 
-        const previousValue: any | typeof SBarkSessionListenerEmptyValue =
-            this._memory.has(key)
-                ? this._memory.get(key)
-                : SBarkSessionListenerEmptyValue;
+        this._triggerListeners(key, value);
+        this._memory.set(key, value);
+        return this;
+    }
+
+    public attachListener(key: string, listener: BarkSessionListener): this {
 
         if (this._listeners.has(key)) {
 
-            const listeners: BarkSessionListener[] =
-                this._listeners.get(key) as BarkSessionListener[];
+            const listeners: Set<BarkSessionListener> =
+                this._listeners.get(key) as Set<BarkSessionListener>;
 
-            for (const listener of listeners) {
-                listener(previousValue, value);
-            }
+            listeners.add(listener);
+        } else {
+
+            const listeners: Set<BarkSessionListener> = new Set();
+            listeners.add(listener);
+
+            this._listeners.set(key, listeners);
         }
+        return this;
+    }
 
-        this._memory.set(key, value);
+    public removeListener(key: string, listener: BarkSessionListener): this {
+
+        if (this._listeners.has(key)) {
+
+            const listeners: Set<BarkSessionListener> =
+                this._listeners.get(key) as Set<BarkSessionListener>;
+
+            listeners.delete(listener);
+        }
+        return this;
+    }
+
+    public removeAllListeners(key: string): this {
+
+        this._listeners.delete(key);
         return this;
     }
 
@@ -66,5 +88,24 @@ export class BarkSession {
                 },
             });
         };
+    }
+
+    private _triggerListeners(key: string, value: any) {
+
+        const previousValue: any | typeof SBarkSessionListenerEmptyValue =
+            this._memory.has(key)
+                ? this._memory.get(key)
+                : SBarkSessionListenerEmptyValue;
+
+        if (this._listeners.has(key)) {
+
+            const listeners: Set<BarkSessionListener> =
+                this._listeners.get(key) as Set<BarkSessionListener>;
+
+            for (const listener of listeners) {
+                listener(previousValue, value);
+            }
+        }
+        return this;
     }
 }
