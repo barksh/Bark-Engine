@@ -98,21 +98,20 @@ export class BarkGameCandidatesController implements IBarkGameController<IBarkGa
 
         return {
 
-            getCandidates: () => (
+            getCandidates: (
                 _additionalArgument: BarkGameAdditionalArgument,
             ) => {
                 return [
                     ...this._candidatesMap.keys(),
                 ];
             },
-            executeCandidateScript: (
+            executeCandidateScript: async (
                 _additionalArgument: BarkGameAdditionalArgument,
                 identifier: string,
                 inputParameters: BarkCandidateInputParameters,
                 actionListener: BarkActionListener,
             ) => {
-
-                return this.executeByIdentifier(
+                return await this.executeByIdentifier(
                     identifier,
                     inputParameters,
                     actionListener,

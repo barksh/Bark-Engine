@@ -69,7 +69,6 @@ export class BarkCandidateExecuter {
             const evaluateResult: MarkedResult =
                 await candidateSandbox.evaluate(this._candidate.script);
 
-
             if (evaluateResult.signal === END_SIGNAL.EXCEPTION) {
 
                 return resultBuilder

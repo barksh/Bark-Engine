@@ -42,15 +42,19 @@ export class BarkLog {
 
     private readonly _level: BARK_LOG_LEVEL;
 
-    private readonly _logs: IBarkLogRecord[];
+    private readonly _logRecords: IBarkLogRecord[];
     private readonly _listeners: BarkLogListener[];
 
     private constructor(level: BARK_LOG_LEVEL) {
 
         this._level = level;
 
-        this._logs = [];
+        this._logRecords = [];
         this._listeners = [];
+    }
+
+    public get records(): IBarkLogRecord[] {
+        return this._logRecords;
     }
 
     public addListener(listener: BarkLogListener): this {
@@ -69,19 +73,19 @@ export class BarkLog {
             sandbox.inject('log', {
 
                 debug: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.DEBUG, scope, category, ...args);
+                    this._log(BARK_LOG_LEVEL.DEBUG, scope, category, ...args);
                 },
                 verbose: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.VERBOSE, scope, category, ...args);
+                    this._log(BARK_LOG_LEVEL.VERBOSE, scope, category, ...args);
                 },
                 info: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.INFO, scope, category, ...args);
+                    this._log(BARK_LOG_LEVEL.INFO, scope, category, ...args);
                 },
                 warn: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.WARN, scope, category, ...args);
+                    this._log(BARK_LOG_LEVEL.WARN, scope, category, ...args);
                 },
                 error: (_additionalArgument: BarkGameAdditionalArgument, ...args: any[]) => {
-                    return this._log(BARK_LOG_LEVEL.ERROR, scope, category, ...args);
+                    this._log(BARK_LOG_LEVEL.ERROR, scope, category, ...args);
                 },
             });
         };
@@ -101,7 +105,7 @@ export class BarkLog {
             args,
         };
 
-        this._logs.push(logRecord);
+        this._logRecords.push(logRecord);
         this._listeners.forEach((listener: BarkLogListener) => {
 
             if (this._level <= level) {

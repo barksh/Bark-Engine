@@ -16,7 +16,7 @@
   },
   "homepage": "https://bark.sh",
   "dependencies": {
-    "@sudoo/marked": "^3.16.2",
+    "@sudoo/marked": "^3.17.0",
     "@sudoo/marked-mixin-date": "^1.0.0",
     "@sudoo/marked-mixin-json": "^1.0.0",
     "@sudoo/marked-mixin-math": "^1.4.0",

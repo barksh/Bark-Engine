@@ -14,7 +14,11 @@ export const createAdderIntegrationGame = (): BarkEngine => {
 
         identifier: 'adder',
         script: [
-            `log.info(game.candidates.getCandidates())`,
+            `for (const candidate of game.candidates.getCandidates()) {`,
+            `game.candidates.executeCandidateScript(candidate, "input", () => {`,
+            `game.status.finish();`,
+            `});`,
+            `}`,
         ].join(New_Line_Character),
     });
 };
