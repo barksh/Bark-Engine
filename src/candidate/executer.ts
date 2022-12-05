@@ -5,32 +5,43 @@
  */
 
 import { BarkCandidateController, IBarkCandidateSnapshot } from "./controller/candidate";
-import { IBarkCandidate } from "./declare";
+import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "./declare";
+
+export interface IBarkCandidateExecuterConfig {
+
+    candidate: IBarkCandidate;
+
+    inputParameters: BarkCandidateInputParameters;
+    actionListener: BarkActionListener;
+}
 
 export class BarkCandidateExecuter {
 
-    public static fromCandidate(candidate: IBarkCandidate, index: number): BarkCandidateExecuter {
+    public static fromConfig(config: IBarkCandidateExecuterConfig): BarkCandidateExecuter {
 
-        return new BarkCandidateExecuter(candidate, index);
+        return new BarkCandidateExecuter(config);
     }
 
     private readonly _candidate: IBarkCandidate;
-    private readonly _index: number;
 
     private readonly _controller: BarkCandidateController;
 
-    private constructor(
-        candidate: IBarkCandidate,
-        index: number,
-    ) {
+    private constructor(config: IBarkCandidateExecuterConfig) {
 
-        this._candidate = candidate;
-        this._index = index;
+        this._candidate = config.candidate;
 
         this._controller = BarkCandidateController.fromConfig({
-            candidate,
-            index,
+
+            candidate: config.candidate,
+
+            inputParameters: config.inputParameters,
+            actionListener: config.actionListener,
         });
+    }
+
+    public async execute(): Promise<void> {
+
+        return;
     }
 
     public get candidate(): IBarkCandidate {

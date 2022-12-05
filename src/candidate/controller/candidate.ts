@@ -4,18 +4,24 @@
  * @description Candidate
  */
 
-import { IBarkCandidate } from "../declare";
+import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "../declare";
+import { BarkCandidateActionController, IBarkCandidateActionSnapshot } from "./action";
+import { BarkCandidateInputController, IBarkCandidateInputSnapshot } from "./input";
 
 export interface IBarkCandidateControllerConfig {
 
     readonly candidate: IBarkCandidate;
-    readonly index: number;
+
+    readonly inputParameters: BarkCandidateInputParameters;
+    readonly actionListener: BarkActionListener;
 }
 
 export interface IBarkCandidateSnapshot {
 
     readonly identifier: string;
-    readonly index: number;
+
+    readonly input: IBarkCandidateInputSnapshot;
+    readonly action: IBarkCandidateActionSnapshot;
 }
 
 export class BarkCandidateController {
@@ -26,12 +32,20 @@ export class BarkCandidateController {
     }
 
     private readonly _candidate: IBarkCandidate;
-    private readonly _index: number;
+
+    private readonly _inputController: BarkCandidateInputController;
+    private readonly _actionController: BarkCandidateActionController;
 
     private constructor(config: IBarkCandidateControllerConfig) {
 
         this._candidate = config.candidate;
-        this._index = config.index;
+
+        this._inputController = BarkCandidateInputController.fromParameters(
+            config.inputParameters,
+        );
+        this._actionController = BarkCandidateActionController.fromListener(
+            config.actionListener,
+        );
     }
 
     public createSnapshot(): IBarkCandidateSnapshot {
@@ -39,7 +53,9 @@ export class BarkCandidateController {
         return {
 
             identifier: this._candidate.identifier,
-            index: this._index,
+
+            input: this._inputController.createSnapshot(),
+            action: this._actionController.createSnapshot(),
         };
     }
 }
