@@ -6,6 +6,7 @@
 
 import { BarkActionListener, BarkCandidateInputParameters, IBarkCandidate } from "../../candidate/declare";
 import { BarkCandidateExecuter } from "../../candidate/executer";
+import { BarkCandidateResultBuilder, BARK_CANDIDATE_RESULT_SIGNAL, IBarkCandidateResult } from "../../candidate/result";
 import { BarkGameAdditionalArgument } from "../additional-argument";
 import { IBarkGameController } from "./controller";
 
@@ -37,21 +38,42 @@ export class BarkGameCandidatesController implements IBarkGameController<IBarkGa
         }
     }
 
+    public async executeByIdentifier(
+        identifier: string,
+        inputParameters: BarkCandidateInputParameters,
+        actionListener: BarkActionListener,
+    ): Promise<IBarkCandidateResult> {
+
+        if (this._candidatesMap.has(identifier)) {
+            const candidate: IBarkCandidate =
+                this._candidatesMap.get(identifier) as IBarkCandidate;
+
+            return this.executeByCandidate(candidate, inputParameters, actionListener);
+        }
+
+        const resultBuilder: BarkCandidateResultBuilder = BarkCandidateResultBuilder.fromScratch();
+
+        return resultBuilder
+            .signal(BARK_CANDIDATE_RESULT_SIGNAL.BAD_REQUEST)
+            .reason("Identifier not found")
+            .build();
+    }
+
     public async executeByCandidate(
         candidate: IBarkCandidate,
         inputParameters: BarkCandidateInputParameters,
         actionListener: BarkActionListener,
-    ): Promise<void> {
+    ): Promise<IBarkCandidateResult> {
 
         const executer = BarkCandidateExecuter.fromConfig({
+
             candidate,
 
             inputParameters,
             actionListener,
         });
 
-        await executer.execute();
-        return;
+        return await executer.execute();
     }
 
     public createSnapshot(): IBarkGameCandidatesSnapshot {
