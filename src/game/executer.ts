@@ -45,7 +45,7 @@ export class BarkGameExecuter {
         this.config = config;
     }
 
-    public async execute(candidates: Iterable<IBarkCandidate>): Promise<IBarkGameResult> {
+    public async execute(candidates: IBarkCandidate[]): Promise<IBarkGameResult> {
 
         const additionalArgument: BarkGameAdditionalArgument = BarkGameAdditionalArgument.create();
 

@@ -4,6 +4,7 @@
  * @description Candidates
  */
 
+import { IBarkCandidateSnapshot } from "../../candidate/controller/candidate";
 import { IBarkCandidate } from "../../candidate/declare";
 import { BarkCandidateExecuter } from "../../candidate/executer";
 import { BarkGameAdditionalArgument } from "../additional-argument";
@@ -11,20 +12,20 @@ import { IBarkGameController } from "./controller";
 
 export interface IBarkGameCandidatesSnapshot {
 
-    candidates: IBarkCandidate[];
+    candidates: IBarkCandidateSnapshot[];
 }
 
 export class BarkGameCandidatesController implements IBarkGameController<IBarkGameCandidatesSnapshot> {
 
     public static fromCandidates(
-        candidates: Iterable<IBarkCandidate>,
+        candidates: IBarkCandidate[],
     ): BarkGameCandidatesController {
 
         const candidateExecuters: BarkCandidateExecuter[] = [];
 
-        for (const candidate of candidates) {
+        for (let i = 0; i < candidates.length; i++) {
             candidateExecuters.push(
-                BarkCandidateExecuter.fromCandidate(candidate),
+                BarkCandidateExecuter.fromCandidate(candidates[i], i),
             );
         }
         return new BarkGameCandidatesController(candidateExecuters);
@@ -41,7 +42,7 @@ export class BarkGameCandidatesController implements IBarkGameController<IBarkGa
 
         return {
             candidates: this._candidates.map((each) => {
-                return each.candidate;
+                return each.createSnapshot();
             }),
         };
     }

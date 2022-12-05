@@ -12,7 +12,7 @@ import { BarkGameStatusController, IBarkGameStatusSnapshot } from "./status";
 export interface IBarkGameControllerConfig {
 
     readonly startingRound?: number;
-    readonly candidates: Iterable<IBarkCandidate>;
+    readonly candidates: IBarkCandidate[];
 }
 
 export interface IBarkGameSnapshot {
