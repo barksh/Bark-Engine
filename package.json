@@ -15,8 +15,10 @@
     "url": "https://github.com/BarkSH/Bark-Engine/issues"
   },
   "homepage": "https://bark.sh",
+  "peerDependencies": {
+    "@sudoo/marked": "*"
+  },
   "dependencies": {
-    "@sudoo/marked": "^3.17.0",
     "@sudoo/marked-mixin-date": "^1.0.0",
     "@sudoo/marked-mixin-json": "^1.0.0",
     "@sudoo/marked-mixin-math": "^1.4.0",
@@ -25,6 +27,7 @@
     "connor": "^2.7.0"
   },
   "devDependencies": {
+    "@sudoo/marked": "^3.17.0",
     "@sudoo/triforce": "^3.10.1"
   },
   "nyc": {
